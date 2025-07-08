@@ -11,47 +11,49 @@ The goal of this SQL project is to:
 * **Enable Data Extraction:** Provide clear SQL queries for extracting, transforming, and loading data for business intelligence tools and further analysis.
 * **Support Churn Insights:** Facilitate the exploration of relationships between customer attributes, service usage, and churn behavior directly within the database.
 
-## 🛠️ Key Components & Data Schema (Conceptual)
+-- 1. Select all columns from a table
+SELECT * 
+FROM table_name;
 
-While specific table names and structures may vary, a typical database for customer churn analysis would involve tables like:
+-- 2. Select specific columns, with alias
+SELECT id, name AS full_name
+FROM users;
 
-### `Customers` Table (Conceptual Example)
-Stores core customer demographic and account information.
-| Column Name      | Data Type | Description                               | Example Values           |
-| :--------------- | :-------- | :---------------------------------------- | :----------------------- |
-| `CustomerID`     | INT       | Unique identifier for each customer       | 1001, 1002               |
-| `Gender`         | VARCHAR   | Male/Female                               | 'Male', 'Female'         |
-| `Age`            | INT       | Customer's age                            | 25, 45                   |
-| `MaritalStatus`  | VARCHAR   | Marital status (e.g., 'Single', 'Married') | 'Single', 'Partner'      |
-| `Dependents`     | BIT       | Does customer have dependents? (True/False) | 1 (True), 0 (False)      |
-| `TenureMonths`   | INT       | Number of months customer has stayed      | 12, 60                   |
-| `TotalCharges`   | DECIMAL   | Total amount charged to the customer      | 123.45, 9876.54          |
-| `Churn`          | BIT       | Did the customer churn? (1=Yes, 0=No)     | 1, 0                     |
+-- 3. Filter rows
+SELECT name, salary
+FROM employees
+WHERE department = 'IT'
+  AND salary > 50000;
+
+-- 4. Distinct values
+SELECT DISTINCT department
+FROM employees;
+
+-- 5. Sort results
+SELECT name, created_at
+FROM posts
+ORDER BY created_at DESC;
+
+-- 6. Limit & Offset (pagination)
+SELECT *
+FROM orders
+ORDER BY order_date DESC
+LIMIT 10
+OFFSET 20;
+
+-- 7. Aggregation and grouping
+SELECT department, COUNT(*) AS num_emp, AVG(salary) AS avg_sal
+FROM employees
+GROUP BY department
+HAVING COUNT(*) > 5;
+
+-- 8. Join tables
+SELECT o.id AS order_id, u.name AS customer
+FROM orders o
+INNER JOIN users u ON o.user_id = u.id;
 
 ### `Services` Table (Conceptual Example)
 Details about services subscribed by customers.
-| Column Name        | Data Type | Description                                   |
-| :----------------- | :-------- | :-------------------------------------------- |
-| `CustomerID`       | INT       | Foreign key linking to `Customers`            |
-| `PhoneService`     | BIT       | Has phone service?                            |
-| `MultipleLines`    | BIT       | Has multiple lines?                           |
-| `InternetService`  | VARCHAR   | Type of internet service (e.g., 'DSL', 'Fiber optic', 'No') |
-| `OnlineSecurity`   | BIT       | Has online security?                          |
-| `OnlineBackup`     | BIT       | Has online backup?                            |
-| `DeviceProtection` | BIT       | Has device protection?                        |
-| `TechSupport`      | BIT       | Has tech support?                             |
-| `StreamingTV`      | BIT       | Has streaming TV?                             |
-| `StreamingMovies`  | BIT       | Has streaming movies?                         |
-
-### `Contracts` Table (Conceptual Example)
-Details about customer contracts and billing.
-| Column Name      | Data Type | Description                                   |
-| :--------------- | :-------- | :-------------------------------------------- |
-| `CustomerID`     | INT       | Foreign key linking to `Customers`            |
-| `ContractType`   | VARCHAR   | Type of contract (e.g., 'Month-to-month', 'One year', 'Two year') |
-| `PaperlessBilling` | BIT       | Is paperless billing enabled?                 |
-| `PaymentMethod`  | VARCHAR   | How the customer pays (e.g., 'Electronic check', 'Mailed check') |
-| `MonthlyCharges` | DECIMAL   | Monthly recurring charges                     |
 
 ## 💻 Example SQL Commands & Queries
 
@@ -91,6 +93,15 @@ This section demonstrates common SQL operations relevant to churn analysis:
     UPDATE Customers
     SET Churn = 0 -- Set to 0 for retained
     WHERE CustomerID = 12345;
+
+     Summary
+Clauses: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT / OFFSET
+
+Commands: INSERT, UPDATE, DELETE, CREATE TABLE, ALTER TABLE, DROP TABLE
+
+Functions & Expressions: COUNT(), SUM(), AVG(), MIN(), MAX(), ROUND(), CASE, arithmetic ops (+, -, *, /), string ops
+
+
     ```
 
 ## 🚀 Getting Started (Conceptual)
